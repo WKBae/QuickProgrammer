@@ -115,7 +115,6 @@ public class Plugin implements Comparable<Plugin>{
 		 */
 		public Class<? extends BaseBlockModel> getBlockClass() throws ClassNotFoundException {
 			if(blockClass == null) {
-				System.out.println("load class: " + classString);
 				Class<?> baseClass = Class.forName(classString, true, pluginLoader);
 				blockClass = baseClass.asSubclass(BaseBlockModel.class);
 			}

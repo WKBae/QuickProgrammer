@@ -100,8 +100,7 @@ public class CodeBlock extends JComponent {
 	}
 	
 	/**
-	 * 코드 블록을 드래그 할 수 있는지를 설정합니다.<br>
-	 * 드래그를 해제하면 등록한 {@link DragListener}도 실행하지 않습니다.
+	 * 코드 블록을 드래그 할 수 있는지를 설정합니다.
 	 * @param drag 블록을 드래그 할 수 있는지 여부, 블록을 드래그 할 수 있으면 <code>true</code>
 	 */
 	public void setDraggable(boolean drag){

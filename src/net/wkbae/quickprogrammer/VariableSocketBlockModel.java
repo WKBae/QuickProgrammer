@@ -65,6 +65,9 @@ public abstract class VariableSocketBlockModel extends BaseBlockModel {
 		VariableSockets varSockets = getProgram().getVariableSockets();
 		socketCount = 0;
 		for(String idStr : attrs.get("sockets").split(",")) {
+			if("".equals(idStr.trim())) {
+				continue;
+			}
 			sockets.addLast(Integer.parseInt(idStr));
 			varSockets.getSocket(sockets.getLast()).setLocation(getBlock().getX() - VariableSocket.VARIABLE_SOCKET_DEPTH, getBlock().getY() + getBlock().getHeight()/2);
 			socketCount++;

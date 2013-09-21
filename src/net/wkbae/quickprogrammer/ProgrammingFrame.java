@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.beans.Transient;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -144,19 +145,7 @@ public final class ProgrammingFrame extends JInternalFrame {
 						openedFile = file;
 					}
 				} else {
-					if(fc.getFileFilter() instanceof FileExtensionFilter) {
-						file = new File(fc.getSelectedFile() + ((FileExtensionFilter)fc.getFileFilter()).getExtension());
-						if(file.exists()) {
-							int res = JOptionPane.showConfirmDialog(this, "이미 파일이 존재합니다. 덮어쓰시겠습니까?", "Quick Programmer", JOptionPane.YES_NO_OPTION);
-							if(res == JOptionPane.NO_OPTION) {
-								saveAs();
-							} else {
-								openedFile = file;
-							}
-						}
-					} else {
-						openedFile = file;
-					}
+					openedFile = new File(fc.getSelectedFile() + ((FileExtensionFilter)fc.getFileFilter()).getExtension());
 				}
 			} else {
 				openedFile = fc.getSelectedFile();
@@ -179,8 +168,8 @@ public final class ProgrammingFrame extends JInternalFrame {
 	private void load(File file) throws IOException {
 		new LoadManager(getPanel().getProgram(), file).load();
 		getPanel().getProgram().getJobManager().clearJobs();
-		getPanel().getProgram().setSaved();
 		getPanel().getProgram().getJobManager().resetSnapshots();
+		//getPanel().getProgram().setSaved();
 	}
 	
 	/**
@@ -223,8 +212,20 @@ public final class ProgrammingFrame extends JInternalFrame {
 	private final static int TRASHCAN_MARGIN = 10;
 	static {
 		try {
-			TRASHCAN_OPENED = ImageIO.read(Program.class.getResourceAsStream("/image/trashcan_opened.png"));
-			TRASHCAN_CLOSED = ImageIO.read(Program.class.getResourceAsStream("/image/trashcan_closed.png"));
+			InputStream open = Program.class.getResourceAsStream("/image/trashcan_opened.png");
+			if(open != null) {
+				TRASHCAN_OPENED = ImageIO.read(open);
+			} else {
+				TRASHCAN_OPENED = new BufferedImage(TRASHCAN_SIZE.width, TRASHCAN_SIZE.height, BufferedImage.TYPE_INT_ARGB);
+			}
+			
+			InputStream close = Program.class.getResourceAsStream("/image/trashcan_closed.png");
+			if(close != null) {
+				TRASHCAN_CLOSED = ImageIO.read(close);
+			} else {
+				TRASHCAN_CLOSED = new BufferedImage(TRASHCAN_SIZE.width, TRASHCAN_SIZE.height, BufferedImage.TYPE_INT_ARGB);
+			}
+			
 			TRASHCAN_CURSOR = TRASHCAN_OPENED.getScaledInstance(TRASHCAN_CURSOR_SIZE.width, TRASHCAN_CURSOR_SIZE.height, Image.SCALE_SMOOTH);
 		} catch (IOException e) {
 			throw new IllegalStateException("이미지 파일을 읽을 수 없습니다.", e);

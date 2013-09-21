@@ -137,7 +137,7 @@ public class LoadManager {
 						block.getModel().restoreState((HashMap<String, String>) attr);
 					}
 				}
-			} catch(ClassCastException | NumberFormatException e) {
+			} catch(ClassCastException e) {
 				throw new LoadException("잘못된 형식의 파일입니다.", e);
 			} catch(Exception e) {
 				throw new LoadException("파일을 불러올 수 없습니다.", e);
